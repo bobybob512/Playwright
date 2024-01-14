@@ -106,3 +106,20 @@ test('extracting values', async({page}) =>{
     const placeholderValue = await emailField.getAttribute('placeholder')
     expect(placeholderValue).toEqual('Email')
 })
+
+test('assertions', async({page}) =>{
+    //general assertions...executes immediately because there is noawait 
+    const basicFormButton = page.locator('nb-card').filter({hasText: "Basic form"}).locator('button')
+    const value = 5
+    expect(value).toEqual(5)
+
+    const text = await basicFormButton.textContent()
+    expect(text).toEqual("Submit")
+
+    //Locator assertion...await waits for 5 sec 
+    await expect(basicFormButton).toHaveText('Submit')
+
+    //Soft assertion - can continue the execution even if the assertion has failed - Not A Really Good Practice
+    await expect.soft(basicFormButton).toHaveText('Submit5')
+    await basicFormButton.click()
+})
